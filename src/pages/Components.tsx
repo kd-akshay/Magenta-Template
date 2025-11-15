@@ -4,7 +4,7 @@ import {
   AnimatedButton, AnimatedCard, AnimatedBadge, AnimatedProgress, AnimatedSkeleton, AnimatedCounter,
   Accordion, Tabs, Checkbox, Radio, Switch, Alert, Avatar, Divider, Breadcrumbs, Textarea, Select, Pagination,
   Table, TableHeader, TableBody, TableRow, TableCell, SortableTableHeader, type SortDirection,
-  Stepper, type Step, Slider, Rating, EmptyState,
+  Stepper, Slider, Rating, EmptyState,
   Listbox, Combobox, Popover, RadioGroup
 } from '@/components/ui'
 import { EllipsisVerticalIcon, CheckCircleIcon, XCircleIcon, UserIcon, ShoppingBagIcon, CreditCardIcon, TruckIcon, InformationCircleIcon } from '@heroicons/react/24/outline'

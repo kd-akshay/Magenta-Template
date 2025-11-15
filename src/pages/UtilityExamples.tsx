@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Card, Button, Input, Textarea, Badge, Divider } from '@/components/ui'
+import { Card, Button, Input, Badge, Divider } from '@/components/ui'
 import {
   formatDate,
   isToday,
@@ -9,7 +9,6 @@ import {
   formatNumber,
   formatPercentage,
   debounce,
-  throttle,
   capitalize,
   titleCase,
   truncate,

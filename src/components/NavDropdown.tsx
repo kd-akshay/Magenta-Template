@@ -17,9 +17,10 @@ export interface NavDropdownProps {
   label: string
   items: NavDropdownItem[]
   icon?: ReactNode
+  variant?: 'default' | 'header'
 }
 
-const NavDropdown = ({ label, items, icon }: NavDropdownProps) => {
+const NavDropdown = ({ label, items, icon, variant = 'default' }: NavDropdownProps) => {
   const location = useLocation()
   const navigate = useNavigate()
   const { config } = useTransition()
@@ -33,14 +34,23 @@ const NavDropdown = ({ label, items, icon }: NavDropdownProps) => {
   // Convert duration to seconds for Headless UI Transition
   const transitionDuration = config.duration / 1000
 
+  const isHeaderVariant = variant === 'header'
+
   return (
     <Menu as="div" className="relative inline-block text-left">
       {({ open }) => (
         <>
           <Menu.Button
             className={cn(
-              'flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
-              isActive || open
+              'flex items-center gap-1 px-3 py-2 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
+              isHeaderVariant
+                ? 'font-bold text-white'
+                : 'font-medium transition-all',
+              isHeaderVariant
+                ? isActive || open
+                  ? 'bg-primary/20'
+                  : ''
+                : isActive || open
                 ? 'text-primary bg-primary/10'
                 : 'text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
             )}
@@ -52,6 +62,7 @@ const NavDropdown = ({ label, items, icon }: NavDropdownProps) => {
             <ChevronDownIcon
               className={cn(
                 'w-4 h-4 transition-transform',
+                isHeaderVariant && 'text-white',
                 open && 'transform rotate-180'
               )}
               style={{ transitionDuration: `${config.duration}ms` }}

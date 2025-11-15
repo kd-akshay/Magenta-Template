@@ -117,7 +117,7 @@ export const AdvancedSSEExample = () => {
 export const RealTimeDataExample = () => {
   const [data, setData] = useState<any>(null)
   
-  const { isConnected, lastMessage } = useServerSentEvents({
+  const { isConnected } = useServerSentEvents({
     url: '/api/realtime-data',
     onMessage: (event) => {
       try {

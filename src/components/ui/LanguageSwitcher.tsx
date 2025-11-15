@@ -4,7 +4,11 @@ import type { MenuItem } from './PopupMenu'
 import { GlobeAltIcon } from '@heroicons/react/24/outline'
 import Button from './Button'
 
-const LanguageSwitcher = () => {
+interface LanguageSwitcherProps {
+  variant?: 'default' | 'header'
+}
+
+const LanguageSwitcher = ({ variant = 'default' }: LanguageSwitcherProps) => {
   const { i18n } = useTranslation()
   
   const languages = [
@@ -22,13 +26,15 @@ const LanguageSwitcher = () => {
     },
   }))
   
+  const isHeaderVariant = variant === 'header'
+  
   return (
     <PopupMenu
       trigger={
         <Button 
           variant="ghost" 
           size="sm" 
-          className="gap-2"
+          className={isHeaderVariant ? "gap-2 text-white" : "gap-2"}
           aria-label={`Current language: ${currentLanguage.label}. Click to change language.`}
           aria-haspopup="menu"
         >

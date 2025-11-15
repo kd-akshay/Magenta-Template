@@ -56,21 +56,10 @@ const NestedRoutingLayout = () => {
 
         {/* Breadcrumbs */}
         <Breadcrumbs
-          items={breadcrumbItems.map((item, index) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={cn(
-                'text-sm transition-colors',
-                index === breadcrumbItems.length - 1
-                  ? 'text-gray-900 dark:text-gray-100 font-medium'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-primary'
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
-          separator={<ChevronRightIcon className="w-4 h-4 text-gray-400" />}
+          items={breadcrumbItems.map((item) => ({
+            label: item.label,
+            path: item.path,
+          }))}
         />
       </div>
 

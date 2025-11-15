@@ -30,6 +30,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setUser, clearUser } from '@/store/slices/userSlice'
 import { useToast } from '@/components/ui'
+import { useTheme } from '@/contexts/ThemeContext'
 
 /**
  * Represents an authenticated user's data.
@@ -173,11 +174,23 @@ export function AuthProvider({ children }: AuthProviderProps): React.JSX.Element
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { showToast } = useToast()
+  const { isDark } = useTheme()
   const [isLoading, setIsLoading] = useState(true)
   
   // Get user from Redux store - single source of truth for auth state
   const user = useAppSelector((state) => state.user.user)
   const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated)
+
+  /**
+   * Generates avatar URL based on current theme.
+   * Light theme: white background, black text
+   * Dark theme: black background, white text
+   */
+  const getAvatarUrl = (name: string): string => {
+    const background = isDark ? '000' : 'fff'
+    const color = isDark ? 'fff' : '000'
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${background}&color=${color}`
+  }
 
   /**
    * Effect: Check for existing session on component mount.
@@ -218,6 +231,27 @@ export function AuthProvider({ children }: AuthProviderProps): React.JSX.Element
 
     checkAuth()
   }, [dispatch])
+
+  /**
+   * Effect: Update avatar URL when theme changes.
+   *
+   * @remarks
+   * This effect updates the user's avatar URL when the theme changes
+   * to ensure the avatar matches the current theme.
+   *
+   * @internal
+   */
+  useEffect(() => {
+    if (user && user.name) {
+      const newAvatarUrl = getAvatarUrl(user.name)
+      if (user.avatar !== newAvatarUrl) {
+        const updatedUser = { ...user, avatar: newAvatarUrl }
+        localStorage.setItem('user', JSON.stringify(updatedUser))
+        dispatch(setUser(updatedUser))
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDark])
 
   /**
    * Authenticates a user with email and password.
@@ -282,7 +316,7 @@ export function AuthProvider({ children }: AuthProviderProps): React.JSX.Element
         id: '1',
         name: email.split('@')[0], // Extract username from email
         email,
-        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(email.split('@')[0])}&background=e20074&color=fff`,
+        avatar: getAvatarUrl(email.split('@')[0]),
       }
 
       // TODO: Replace with actual token from API
@@ -375,7 +409,7 @@ export function AuthProvider({ children }: AuthProviderProps): React.JSX.Element
         id: Date.now().toString(),
         name,
         email,
-        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=e20074&color=fff`,
+        avatar: getAvatarUrl(name),
       }
 
       // TODO: Replace with actual token from API

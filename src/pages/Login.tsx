@@ -13,7 +13,6 @@ const Login = () => {
   const { login, isAuthenticated } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const { showToast } = useToast()
 
   // Redirect if already authenticated
   if (isAuthenticated) {

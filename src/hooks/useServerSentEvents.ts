@@ -103,7 +103,7 @@ export function useServerSentEvents({
   onMessage,
   onError,
   onOpen,
-  onClose,
+  onClose: _onClose,
   autoConnect = true,
   reconnectInterval = 3000,
   maxReconnectAttempts = 5,
@@ -115,7 +115,7 @@ export function useServerSentEvents({
   
   const eventSourceRef = useRef<EventSource | null>(null)
   const reconnectAttemptsRef = useRef(0)
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isManualDisconnectRef = useRef(false)
 
   const disconnect = useCallback(() => {

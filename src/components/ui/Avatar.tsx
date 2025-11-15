@@ -7,9 +7,10 @@ export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   name?: string
   size?: 'sm' | 'md' | 'lg' | 'xl'
   status?: 'online' | 'offline' | 'away' | 'busy'
+  variant?: 'default' | 'header'
 }
 
-const Avatar = ({ src, alt, name, size = 'md', status, className, ...props }: AvatarProps) => {
+const Avatar = ({ src, alt, name, size = 'md', status, variant = 'default', className, ...props }: AvatarProps) => {
   const sizes = {
     sm: 'w-8 h-8 text-xs',
     md: 'w-10 h-10 text-sm',
@@ -69,16 +70,31 @@ const Avatar = ({ src, alt, name, size = 'md', status, className, ...props }: Av
         </span>
       )}
       {status && (
-        <span
-          id={statusId}
-          className={cn(
-            'absolute bottom-0 right-0 block rounded-full border-2 border-white dark:border-gray-800 transition-all transition-all',
-            statusColors[status],
-            size === 'sm' ? 'w-2.5 h-2.5' : 'w-3 h-3'
+        <>
+          {/* Background circle for better visibility */}
+          {variant === 'header' && (
+            <span
+              className={cn(
+                'absolute bottom-0 right-0 block rounded-full bg-gray-200 dark:bg-gray-600',
+                size === 'sm' ? 'w-4.5 h-4.5 -bottom-0.5 -right-0.5' : 'w-5 h-5 -bottom-0.5 -right-0.5'
+              )}
+              aria-hidden="true"
+            />
           )}
-          aria-label={`User status: ${status}`}
-          role="status"
-        />
+          <span
+            id={statusId}
+            className={cn(
+              'absolute bottom-0 right-0 block rounded-full transition-all z-10',
+              variant === 'header' 
+                ? 'border-2 border-gray-200 dark:border-gray-600 shadow-lg' 
+                : 'border-2 border-white dark:border-gray-800',
+              statusColors[status],
+              size === 'sm' ? 'w-3 h-3' : 'w-3.5 h-3.5'
+            )}
+            aria-label={`User status: ${status}`}
+            role="status"
+          />
+        </>
       )}
     </div>
   )

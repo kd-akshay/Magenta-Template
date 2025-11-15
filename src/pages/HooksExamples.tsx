@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { Card, Button, Input, Badge, Divider, Alert } from '@/components/ui'
 import {
   useLocalStorage,
@@ -12,7 +12,6 @@ import {
   useClickOutside,
   useCopyToClipboard,
   usePageLoader,
-  useServerSentEvents,
 } from '@/hooks'
 import { ClipboardDocumentIcon, CheckIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 
@@ -327,7 +326,7 @@ const HooksExamples = () => {
                   <span className="text-sm font-medium">Example 1: Copy with function call</span>
                   <Button
                     size="sm"
-                    variant={copied1 ? 'success' : 'primary'}
+                    variant={copied1 ? 'secondary' : 'primary'}
                     onClick={() => copy1('Hello from clipboard!')}
                   >
                     {copied1 ? (
@@ -353,7 +352,7 @@ const HooksExamples = () => {
                   <span className="text-sm font-medium">Example 2: Copy with initial value</span>
                   <Button
                     size="sm"
-                    variant={copied2 ? 'success' : 'primary'}
+                    variant={copied2 ? 'secondary' : 'primary'}
                     onClick={() => copy2()}
                   >
                     {copied2 ? (

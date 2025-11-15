@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import Chatbot, { type ChatMessage } from '@/components/Chatbot'
-import { Card, Button, Badge, Divider, Alert } from '@/components/ui'
+import Chatbot from '@/components/Chatbot'
+import { Card, Badge, Divider, Alert } from '@/components/ui'
 
 const ChatbotExample = () => {
-  const [messages, setMessages] = useState<ChatMessage[]>([])
 
   // Example handler that simulates API responses
   const handleSendMessage = async (message: string): Promise<string> => {
