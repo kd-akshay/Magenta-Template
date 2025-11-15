@@ -1,4 +1,4 @@
-import { Fragment, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { RadioGroup as HeadlessRadioGroup } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import { cn } from '@/utils/cn'
@@ -75,7 +75,7 @@ const RadioGroup = ({
               )
             }
           >
-            {({ checked, disabled }) => (
+            {({ checked }) => (
               <div className="flex w-full items-center">
                 <div className="flex h-5 items-center">
                   <HeadlessRadioGroup.Label

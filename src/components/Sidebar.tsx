@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { 
@@ -13,11 +13,9 @@ import {
   WrenchScrewdriverIcon,
   CodeBracketIcon,
   XMarkIcon,
-  Bars3Icon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  EyeSlashIcon,
-  EyeIcon
+  EyeSlashIcon
 } from '@heroicons/react/24/outline'
 import { cn } from '@/utils/cn'
 

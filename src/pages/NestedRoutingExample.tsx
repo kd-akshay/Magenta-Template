@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { Card, Button, Breadcrumbs, Badge } from '@/components/ui'
-import { HomeIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
+import { HomeIcon } from '@heroicons/react/24/outline'
 import { cn } from '@/utils/cn'
 
 // Parent Layout Component

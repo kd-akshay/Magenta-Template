@@ -70,7 +70,7 @@ describe('useLocalStorage', () => {
   })
 
   it('handles arrays', () => {
-    const { result } = renderHook(() => useLocalStorage('items', []))
+    const { result } = renderHook(() => useLocalStorage<number[]>('items', []))
     
     act(() => {
       result.current[1]([1, 2, 3])

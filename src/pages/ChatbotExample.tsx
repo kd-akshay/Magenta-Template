@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Chatbot from '@/components/Chatbot'
 import { Card, Badge, Divider, Alert } from '@/components/ui'
 

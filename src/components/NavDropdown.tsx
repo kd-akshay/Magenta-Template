@@ -31,9 +31,6 @@ const NavDropdown = ({ label, items, icon, variant = 'default' }: NavDropdownPro
     close()
   }
 
-  // Convert duration to seconds for Headless UI Transition
-  const transitionDuration = config.duration / 1000
-
   const isHeaderVariant = variant === 'header'
 
   return (
@@ -92,7 +89,7 @@ const NavDropdown = ({ label, items, icon, variant = 'default' }: NavDropdownPro
                 className="focus:outline-none bg-white dark:bg-gray-800"
               >
                 <div className="py-1">
-                {items.map((item, index) => (
+                {items.map((item) => (
                   <Menu.Item key={item.path} as="div">
                     {({ active, close }) => (
                       <Link

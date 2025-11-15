@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
-import { Card, Input, Button, useToast } from '@/components/ui'
+import { Card, Input, Button } from '@/components/ui'
 import { EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline'
 
 const Login = () => {

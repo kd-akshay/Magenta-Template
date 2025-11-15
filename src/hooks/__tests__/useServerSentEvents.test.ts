@@ -50,7 +50,7 @@ const createMessageEvent = (data: string): MessageEvent => {
     origin: '',
     ports: [],
     source: null,
-  } as MessageEvent
+  } as unknown as MessageEvent
 }
 
 describe('useServerSentEvents', () => {

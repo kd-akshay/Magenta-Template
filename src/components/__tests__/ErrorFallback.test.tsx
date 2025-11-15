@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 import ErrorFallback from '../ErrorFallback'
 
@@ -62,9 +61,7 @@ describe('ErrorFallback', () => {
     }
     
     render(
-      <RouterProvider router={router}>
-        <ThrowError />
-      </RouterProvider>
+      <RouterProvider router={router} />
     )
   })
 

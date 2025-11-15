@@ -1,4 +1,4 @@
-import React, { Component, type ReactNode, type ErrorInfo } from 'react'
+import { Component, type ReactNode, type ErrorInfo } from 'react'
 import { ExclamationTriangleIcon, ArrowPathIcon, HomeIcon } from '@heroicons/react/24/outline'
 import { Button, Card } from './ui'
 

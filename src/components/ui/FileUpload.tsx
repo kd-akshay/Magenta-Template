@@ -1,5 +1,4 @@
 import { useState, useRef, useCallback } from 'react'
-import type { ReactNode } from 'react'
 import { CloudArrowUpIcon, XMarkIcon, DocumentIcon, PhotoIcon } from '@heroicons/react/24/outline'
 import { cn } from '@/utils/cn'
 import Button from './Button'

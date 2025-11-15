@@ -1,21 +1,18 @@
 import { useState } from 'react'
-import { Card, Button, Input, Select, Divider } from '@/components/ui'
+import { Button, Input, Select, Divider } from '@/components/ui'
 import { useTheme } from '@/contexts/ThemeContext'
-import { XMarkIcon, Cog6ToothIcon, PaintBrushIcon } from '@heroicons/react/24/outline'
-import { cn } from '@/utils/cn'
+import { XMarkIcon, PaintBrushIcon } from '@heroicons/react/24/outline'
 
 const ThemeControl = () => {
   const [isOpen, setIsOpen] = useState(false)
   const {
     config,
-    isDark,
     setMode,
     setColors,
     setTypography,
     setSpacing,
     setBorderRadius,
     setShadows,
-    setResponsive,
     resetTheme,
   } = useTheme()
 

@@ -110,7 +110,10 @@ describe('Chatbot', () => {
 
   it('displays loading state when sending message', async () => {
     const user = userEvent.setup()
-    const onSendMessage = vi.fn(() => new Promise(resolve => setTimeout(() => resolve('Response'), 100)))
+    const onSendMessage = vi.fn(async (message: string) => {
+      await new Promise(resolve => setTimeout(resolve, 100))
+      return 'Response'
+    })
     render(<Chatbot onSendMessage={onSendMessage} />)
     
     const button = screen.getByLabelText('Open chatbot')

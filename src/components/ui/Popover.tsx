@@ -44,10 +44,6 @@ const Popover = ({
         leave="transition ease-in"
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
-        style={{
-          transitionDuration: `${transitionDuration}s`,
-          transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-        }}
       >
         <HeadlessPopover.Panel
           className={cn(
@@ -55,6 +51,10 @@ const Popover = ({
             positionClasses[position],
             panelClassName
           )}
+          style={{
+            transitionDuration: `${transitionDuration}s`,
+            transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          }}
         >
           {children}
         </HeadlessPopover.Panel>

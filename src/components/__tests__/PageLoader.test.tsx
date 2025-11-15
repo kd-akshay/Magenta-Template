@@ -29,7 +29,7 @@ describe('PageLoader', () => {
   })
 
   it('does not render when isLoading is false', () => {
-    const { container } = render(<PageLoader isLoading={false} />)
+    render(<PageLoader isLoading={false} />)
     expect(screen.queryByRole('status')).not.toBeInTheDocument()
   })
 

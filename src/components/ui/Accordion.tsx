@@ -17,7 +17,7 @@ export interface AccordionProps {
   className?: string
 }
 
-const Accordion = ({ items, allowMultiple = false, className }: AccordionProps) => {
+const Accordion = ({ items, allowMultiple: _allowMultiple = false, className }: AccordionProps) => {
   const { config } = useTransition()
 
   // Convert duration to seconds for Headless UI Transition
@@ -67,14 +67,14 @@ const Accordion = ({ items, allowMultiple = false, className }: AccordionProps) 
                   leave="transition ease-in"
                   leaveFrom="transform opacity-100 translate-y-0"
                   leaveTo="transform opacity-0 -translate-y-2"
-                  style={{
-                    transitionDuration: `${transitionDuration}s`,
-                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-                  }}
                 >
                   <Disclosure.Panel
                     id={contentId}
                     className="px-4 py-3 bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300"
+                    style={{
+                      transitionDuration: `${transitionDuration}s`,
+                      transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+                    }}
                     role="region"
                     aria-labelledby={buttonId}
                   >

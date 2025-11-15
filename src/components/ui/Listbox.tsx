@@ -111,12 +111,14 @@ const Listbox = ({
             leave="transition ease-in"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            style={{
-              transitionDuration: `${transitionDuration}s`,
-              transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-            }}
           >
-            <HeadlessListbox.Options className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white dark:bg-gray-800 py-1 text-base shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none">
+            <HeadlessListbox.Options 
+              className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white dark:bg-gray-800 py-1 text-base shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none"
+              style={{
+                transitionDuration: `${transitionDuration}s`,
+                transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+            >
               {options.map((option) => (
                 <HeadlessListbox.Option
                   key={option.value}

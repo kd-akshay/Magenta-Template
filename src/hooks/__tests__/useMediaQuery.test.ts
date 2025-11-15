@@ -46,7 +46,7 @@ describe('useMediaQuery', () => {
     
     matchMediaMock.mockReturnValue({
       matches: false,
-      addEventListener: vi.fn((event, listener) => {
+      addEventListener: vi.fn((_event, listener) => {
         listeners.push(listener)
       }),
       removeEventListener: vi.fn(),

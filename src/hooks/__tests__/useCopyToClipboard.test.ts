@@ -124,7 +124,7 @@ describe('useCopyToClipboard', () => {
     textarea.focus = vi.fn()
     createElementSpy.mockReturnValue(textarea as any)
 
-    const appendChildSpy = vi.spyOn(document.body, 'appendChild')
+    vi.spyOn(document.body, 'appendChild')
     const removeChildSpy = vi.spyOn(document.body, 'removeChild')
     
     await act(async () => {
