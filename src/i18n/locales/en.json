@@ -1,0 +1,56 @@
+{
+  "common": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "welcome": "Welcome",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "submit": "Submit",
+    "search": "Search",
+    "language": "Language"
+  },
+  "header": {
+    "title": "Magenta Template",
+    "nav": {
+      "home": "Home",
+      "about": "About",
+      "contact": "Contact"
+    }
+  },
+  "footer": {
+    "copyright": "© 2024 Magenta Template. All rights reserved.",
+    "description": "A production-ready React + TypeScript starter template"
+  },
+  "pages": {
+    "home": {
+      "title": "Welcome to Magenta Template",
+      "description": "A modern, production-ready starter template built with Vite, React, TypeScript, Tailwind CSS, Redux Toolkit, and more."
+    },
+    "about": {
+      "title": "About Us",
+      "description": "This is a comprehensive starter template for building modern web applications."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "Get in touch with us",
+      "form": {
+        "name": "Name",
+        "email": "Email",
+        "message": "Message"
+      }
+    },
+    "notFound": {
+      "title": "404 - Page Not Found",
+      "description": "The page you are looking for does not exist."
+    }
+  }
+}
+

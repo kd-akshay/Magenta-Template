@@ -1,0 +1,56 @@
+{
+  "common": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "welcome": "Willkommen",
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "close": "Schließen",
+    "submit": "Absenden",
+    "search": "Suchen",
+    "language": "Sprache"
+  },
+  "header": {
+    "title": "Magenta Vorlage",
+    "nav": {
+      "home": "Startseite",
+      "about": "Über uns",
+      "contact": "Kontakt"
+    }
+  },
+  "footer": {
+    "copyright": "© 2024 Magenta Vorlage. Alle Rechte vorbehalten.",
+    "description": "Eine produktionsreife React + TypeScript Starter-Vorlage"
+  },
+  "pages": {
+    "home": {
+      "title": "Willkommen bei Magenta Vorlage",
+      "description": "Eine moderne, produktionsreife Starter-Vorlage, erstellt mit Vite, React, TypeScript, Tailwind CSS, Redux Toolkit und mehr."
+    },
+    "about": {
+      "title": "Über uns",
+      "description": "Dies ist eine umfassende Starter-Vorlage zum Erstellen moderner Webanwendungen."
+    },
+    "contact": {
+      "title": "Kontaktieren Sie uns",
+      "description": "Nehmen Sie Kontakt mit uns auf",
+      "form": {
+        "name": "Name",
+        "email": "E-Mail",
+        "message": "Nachricht"
+      }
+    },
+    "notFound": {
+      "title": "404 - Seite nicht gefunden",
+      "description": "Die gesuchte Seite existiert nicht."
+    }
+  }
+}
+
