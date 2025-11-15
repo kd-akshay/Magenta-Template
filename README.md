@@ -2,6 +2,8 @@
 
 A production-ready starter template for building modern web applications with Vite, React, TypeScript, Tailwind CSS, Redux Toolkit, and more.
 
+🌐 **Live Demo**: [https://6918c73a40aa560008c42994--magenta-template.netlify.app/](https://6918c73a40aa560008c42994--magenta-template.netlify.app/)
+
 ## 🚀 Features
 
 - ⚡ **Vite** - Fast build tool and dev server
@@ -62,17 +64,20 @@ src/
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd Magenta-Template
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -114,7 +119,7 @@ The template includes a comprehensive set of reusable UI components:
 ### Component Usage
 
 ```tsx
-import { Button, Card, Badge } from '@/components/ui'
+import { Button, Card, Badge } from "@/components/ui";
 
 function MyComponent() {
   return (
@@ -124,13 +129,14 @@ function MyComponent() {
       </Button>
       <Badge variant="success">Success</Badge>
     </Card>
-  )
+  );
 }
 ```
 
 ## 🌐 Internationalization
 
 The template supports multiple languages. Currently includes:
+
 - English (en)
 - German (de)
 
@@ -140,11 +146,11 @@ The template supports multiple languages. Currently includes:
 2. Use translations in components:
 
 ```tsx
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 
 function MyComponent() {
-  const { t } = useTranslation()
-  return <h1>{t('common.welcome')}</h1>
+  const { t } = useTranslation();
+  return <h1>{t("common.welcome")}</h1>;
 }
 ```
 
@@ -153,10 +159,10 @@ function MyComponent() {
 Use the `LanguageSwitcher` component or programmatically:
 
 ```tsx
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 
-const { i18n } = useTranslation()
-i18n.changeLanguage('de')
+const { i18n } = useTranslation();
+i18n.changeLanguage("de");
 ```
 
 ## 🎯 State Management
@@ -168,16 +174,16 @@ Redux Toolkit is configured with example slices:
 Manages dark/light theme:
 
 ```tsx
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { toggleTheme, setTheme } from '@/store/slices/themeSlice'
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { toggleTheme, setTheme } from "@/store/slices/themeSlice";
 
 function MyComponent() {
-  const theme = useAppSelector((state) => state.theme.theme)
-  const dispatch = useAppDispatch()
-  
+  const theme = useAppSelector((state) => state.theme.theme);
+  const dispatch = useAppDispatch();
+
   const handleToggle = () => {
-    dispatch(toggleTheme())
-  }
+    dispatch(toggleTheme());
+  };
 }
 ```
 
@@ -186,11 +192,11 @@ function MyComponent() {
 Example user state management:
 
 ```tsx
-import { useAppDispatch } from '@/store/hooks'
-import { setUser, clearUser } from '@/store/slices/userSlice'
+import { useAppDispatch } from "@/store/hooks";
+import { setUser, clearUser } from "@/store/slices/userSlice";
 
-const dispatch = useAppDispatch()
-dispatch(setUser({ id: '1', name: 'John', email: 'john@example.com' }))
+const dispatch = useAppDispatch();
+dispatch(setUser({ id: "1", name: "John", email: "john@example.com" }));
 ```
 
 ## 📡 API Client
@@ -198,13 +204,13 @@ dispatch(setUser({ id: '1', name: 'John', email: 'john@example.com' }))
 Axios is configured with interceptors for request/response handling:
 
 ```tsx
-import apiClient from '@/services/apiClient'
+import apiClient from "@/services/apiClient";
 
 // GET request
-const response = await apiClient.get('/users')
+const response = await apiClient.get("/users");
 
 // POST request
-const response = await apiClient.post('/users', { name: 'John' })
+const response = await apiClient.post("/users", { name: "John" });
 ```
 
 ### Environment Variables
@@ -255,7 +261,7 @@ colors: {
 Dark mode is class-based. Toggle using the `ThemeToggle` component or Redux:
 
 ```tsx
-dispatch(toggleTheme())
+dispatch(toggleTheme());
 ```
 
 ## 📝 Absolute Imports
@@ -264,10 +270,10 @@ Use `@/` alias for cleaner imports:
 
 ```tsx
 // Instead of
-import Button from '../../../components/ui/Button'
+import Button from "../../../components/ui/Button";
 
 // Use
-import Button from '@/components/ui/Button'
+import Button from "@/components/ui/Button";
 ```
 
 ## 🧪 Development
