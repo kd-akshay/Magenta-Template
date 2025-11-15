@@ -110,8 +110,8 @@ const Header = ({ sidebarToggle }: HeaderProps = {}) => {
               className="flex items-center space-x-2"
               aria-label={`${t('header.title')} - Home`}
             >
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center" aria-hidden="true">
-                <span className="text-white font-bold text-lg">M</span>
+              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center" aria-hidden="true">
+                <span className="text-primary font-bold text-lg">M</span>
               </div>
               <span className="text-xl font-bold text-white">
                 {t('header.title')}
