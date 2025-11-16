@@ -1,4 +1,4 @@
-import { Fragment, useState, useId } from 'react'
+import { Fragment, useState, useId, useMemo, useCallback, memo } from 'react'
 import type { ReactNode } from 'react'
 import { Listbox as HeadlessListbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline'
@@ -25,7 +25,13 @@ export interface ListboxProps {
   size?: 'sm' | 'md' | 'lg'
 }
 
-const Listbox = ({
+const SIZE_CLASSES = {
+  sm: 'px-3 py-1.5 text-sm',
+  md: 'px-4 py-2 text-base',
+  lg: 'px-4 py-2.5 text-lg',
+} as const
+
+const Listbox = memo(({
   options,
   value: controlledValue,
   defaultValue,
@@ -40,28 +46,22 @@ const Listbox = ({
   const [internalValue, setInternalValue] = useState(defaultValue)
   const { config } = useTransition()
 
-  const isControlled = controlledValue !== undefined
-  const selectedValue = isControlled ? controlledValue : internalValue
-  const selectedOption = options.find((opt) => opt.value === selectedValue)
+  const isControlled = useMemo(() => controlledValue !== undefined, [controlledValue])
+  const selectedValue = useMemo(() => isControlled ? controlledValue : internalValue, [isControlled, controlledValue, internalValue])
+  const selectedOption = useMemo(() => options.find((opt) => opt.value === selectedValue), [options, selectedValue])
 
-  const sizes = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-4 py-2.5 text-lg',
-  }
-
-  const handleChange = (newValue: string | number) => {
+  const handleChange = useCallback((newValue: string | number) => {
     if (!isControlled) {
       setInternalValue(newValue)
     }
     onChange?.(newValue)
-  }
+  }, [isControlled, onChange])
 
   const listboxId = useId()
-  const errorId = error ? `${listboxId}-error` : undefined
+  const errorId = useMemo(() => error ? `${listboxId}-error` : undefined, [error, listboxId])
 
   // Convert duration to seconds for Headless UI Transition
-  const transitionDuration = config.duration / 1000
+  const transitionDuration = useMemo(() => config.duration / 1000, [config.duration])
 
   return (
     <div className={cn('w-full', className)}>
@@ -84,7 +84,7 @@ const Listbox = ({
             id={listboxId}
             className={cn(
               'relative w-full cursor-pointer rounded-lg border bg-white dark:bg-gray-800 text-left shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent',
-              sizes[size],
+              SIZE_CLASSES[size],
               'border-gray-300 dark:border-gray-600',
               'text-gray-900 dark:text-gray-100',
               'placeholder-gray-400 dark:placeholder-gray-500',
@@ -108,9 +108,15 @@ const Listbox = ({
 
           <Transition
             as={Fragment}
-            leave="transition ease-in"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
+            leave="transition ease-in duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+            enter="transition ease-out duration-200"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            style={{
+              transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
           >
             <HeadlessListbox.Options 
               className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white dark:bg-gray-800 py-1 text-base shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none"
@@ -126,9 +132,9 @@ const Listbox = ({
                   disabled={option.disabled}
                   className={({ active, disabled: optionDisabled }) =>
                     cn(
-                      'relative cursor-pointer select-none py-2 pl-10 pr-4 transition-all',
-                      active
-                        ? 'bg-primary/10 text-primary'
+                      'relative cursor-pointer select-none py-2 pl-10 pr-4 transition-all duration-150',
+                      active && !optionDisabled
+                        ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
                         : 'text-gray-900 dark:text-gray-100',
                       optionDisabled && 'opacity-50 cursor-not-allowed'
                     )
@@ -140,7 +146,7 @@ const Listbox = ({
                         {option.label}
                       </span>
                       {selected && (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-primary">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-900 dark:text-gray-100">
                           <CheckIcon className="h-5 w-5" aria-hidden="true" />
                         </span>
                       )}
@@ -165,7 +171,9 @@ const Listbox = ({
       )}
     </div>
   )
-}
+})
+
+Listbox.displayName = 'Listbox'
 
 export default Listbox
 

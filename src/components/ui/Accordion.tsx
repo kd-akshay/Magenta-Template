@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, memo, useMemo, useRef, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Disclosure, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
@@ -17,11 +17,8 @@ export interface AccordionProps {
   className?: string
 }
 
-const Accordion = ({ items, allowMultiple: _allowMultiple = false, className }: AccordionProps) => {
+const Accordion = memo(({ items, allowMultiple: _allowMultiple = false, className }: AccordionProps) => {
   const { config } = useTransition()
-
-  // Convert duration to seconds for Headless UI Transition
-  const transitionDuration = config.duration / 1000
 
   return (
     <div className={cn('space-y-2', className)}>
@@ -31,64 +28,115 @@ const Accordion = ({ items, allowMultiple: _allowMultiple = false, className }: 
         const buttonId = `${accordionId}-button`
 
         return (
-          <Disclosure
+          <AccordionItem
             key={index}
-            defaultOpen={item.defaultOpen}
-            as="div"
-            className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
-          >
-            {({ open }) => (
-              <>
-                <Disclosure.Button
-                  id={buttonId}
-                  className="w-full flex items-center justify-between px-4 py-3 text-left bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset"
-                  aria-expanded={open}
-                  aria-controls={contentId}
-                >
-                  <span className="font-medium text-gray-900 dark:text-gray-100">{item.title}</span>
-                  <ChevronDownIcon
-                    className={cn(
-                      'h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform',
-                      open && 'transform rotate-180'
-                    )}
-                    aria-hidden="true"
-                    style={{
-                      transitionDuration: `${transitionDuration}ms`,
-                      transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-                    }}
-                  />
-                </Disclosure.Button>
-                <Transition
-                  as={Fragment}
-                  show={open}
-                  enter="transition ease-out"
-                  enterFrom="transform opacity-0 -translate-y-2"
-                  enterTo="transform opacity-100 translate-y-0"
-                  leave="transition ease-in"
-                  leaveFrom="transform opacity-100 translate-y-0"
-                  leaveTo="transform opacity-0 -translate-y-2"
-                >
-                  <Disclosure.Panel
-                    id={contentId}
-                    className="px-4 py-3 bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300"
-                    style={{
-                      transitionDuration: `${transitionDuration}s`,
-                      transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-                    }}
-                    role="region"
-                    aria-labelledby={buttonId}
-                  >
-                    {item.content}
-                  </Disclosure.Panel>
-                </Transition>
-              </>
-            )}
-          </Disclosure>
+            item={item}
+            accordionId={accordionId}
+            contentId={contentId}
+            buttonId={buttonId}
+          />
         )
       })}
     </div>
   )
-}
+})
+
+Accordion.displayName = 'Accordion'
+
+// Individual accordion item component with smooth animation
+const AccordionItem = memo(({ 
+  item, 
+  accordionId, 
+  contentId, 
+  buttonId 
+}: { 
+  item: AccordionItem
+  accordionId: string
+  contentId: string
+  buttonId: string
+}) => {
+  const contentRef = useRef<HTMLDivElement>(null)
+  const [height, setHeight] = useState<number>(0)
+  const prevOpenRef = useRef<boolean | null>(null)
+  
+  // Initialize height on mount for defaultOpen
+  useEffect(() => {
+    if (item.defaultOpen && contentRef.current) {
+      requestAnimationFrame(() => {
+        if (contentRef.current) {
+          setHeight(contentRef.current.scrollHeight)
+        }
+      })
+    }
+  }, [])
+
+  return (
+    <Disclosure
+      defaultOpen={item.defaultOpen}
+      as="div"
+      className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
+    >
+      {({ open }) => {
+        // Update height when open state changes
+        if (prevOpenRef.current !== open) {
+          prevOpenRef.current = open
+          
+          // Use requestAnimationFrame to ensure DOM has updated
+          requestAnimationFrame(() => {
+            if (contentRef.current) {
+              if (open) {
+                const scrollHeight = contentRef.current.scrollHeight
+                setHeight(scrollHeight)
+              } else {
+                setHeight(0)
+              }
+            }
+          })
+        }
+
+        return (
+          <>
+            <Disclosure.Button
+              id={buttonId}
+              className="w-full flex items-center justify-between px-4 py-3 text-left bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600 focus:ring-inset"
+              aria-expanded={open}
+              aria-controls={contentId}
+            >
+              <span className="font-medium text-gray-900 dark:text-gray-100">{item.title}</span>
+              <ChevronDownIcon
+                className={cn(
+                  'h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-300 ease-in-out',
+                  open && 'transform rotate-180'
+                )}
+                aria-hidden="true"
+              />
+            </Disclosure.Button>
+            <div
+              className="overflow-hidden transition-[height] duration-300 ease-out"
+              style={{
+                height: `${height}px`,
+                willChange: 'height',
+              }}
+            >
+              <Disclosure.Panel
+                id={contentId}
+                ref={contentRef}
+                className="px-4 py-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                role="region"
+                aria-labelledby={buttonId}
+                static
+              >
+                {item.content}
+              </Disclosure.Panel>
+            </div>
+          </>
+        )
+      }}
+    </Disclosure>
+  )
+})
+
+AccordionItem.displayName = 'AccordionItem'
 
 export default Accordion
 

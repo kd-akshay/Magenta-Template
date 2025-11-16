@@ -1,4 +1,4 @@
-import { forwardRef, useState, useEffect } from 'react'
+import { forwardRef, useState, useEffect, useMemo, useCallback, useId } from 'react'
 import type { InputHTMLAttributes } from 'react'
 import { FaCheck } from 'react-icons/fa'
 import { cn } from '@/utils/cn'
@@ -10,8 +10,9 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, label, error, id, checked, defaultChecked, onChange, ...props }, ref) => {
-    const checkboxId = id || `checkbox-${Math.random().toString(36).substr(2, 9)}`
-    const errorId = error ? `${checkboxId}-error` : undefined
+    const generatedId = useId()
+    const checkboxId = useMemo(() => id || `checkbox-${generatedId}`, [id, generatedId])
+    const errorId = useMemo(() => error ? `${checkboxId}-error` : undefined, [error, checkboxId])
     const [isChecked, setIsChecked] = useState(checked ?? defaultChecked ?? false)
     
     useEffect(() => {
@@ -20,12 +21,12 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       }
     }, [checked])
     
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       if (checked === undefined) {
         setIsChecked(e.target.checked)
       }
       onChange?.(e)
-    }
+    }, [checked, onChange])
     
     return (
       <div className="w-full">

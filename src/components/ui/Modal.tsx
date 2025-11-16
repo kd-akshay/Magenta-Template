@@ -22,39 +22,39 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md', showCloseButton 
   }
   
   return (
-    <Transition appear show={isOpen} as={Fragment}>
+    <Transition show={isOpen} as={Fragment}>
       <Dialog 
         as="div" 
-        className="relative z-50" 
+        className="relative z-[9999]" 
         onClose={onClose}
         aria-labelledby={title ? 'modal-title' : undefined}
       >
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
+          enter="ease-out duration-150"
           enterFrom="opacity-0"
           enterTo="opacity-100"
-          leave="ease-in duration-200"
+          leave="ease-in duration-100"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/30 dark:bg-black/50" />
+          <div className="fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm z-[9998]" aria-hidden="true" />
         </Transition.Child>
         
-        <div className="fixed inset-0 overflow-y-auto">
+        <div className="fixed inset-0 overflow-y-auto z-[9999]">
           <div className="flex min-h-full items-center justify-center p-4">
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-300"
+              enter="ease-out duration-150"
               enterFrom="opacity-0 scale-95"
               enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
+              leave="ease-in duration-100"
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel
                 className={cn(
-                  'w-full transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl transition-all',
+                  'w-full mx-auto transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl z-[9999]',
                   sizes[size]
                 )}
               >

@@ -7,7 +7,7 @@ import {
   Stepper, Slider, Rating, EmptyState,
   Listbox, Combobox, Popover, RadioGroup
 } from '@/components/ui'
-import { EllipsisVerticalIcon, CheckCircleIcon, XCircleIcon, UserIcon, ShoppingBagIcon, CreditCardIcon, TruckIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
+import { EllipsisVerticalIcon, CheckCircleIcon, XCircleIcon, UserIcon, ShoppingBagIcon, CreditCardIcon, TruckIcon, InformationCircleIcon, HeartIcon, StarIcon, PlusIcon, TrashIcon, PencilIcon, ShareIcon, BellIcon } from '@heroicons/react/24/outline'
 
 const Components = () => {
   const { showToast } = useToast()
@@ -199,18 +199,153 @@ const Components = () => {
       
       {/* Popup Menu */}
       <Card header={<h2 className="text-xl font-semibold">Popup Menu</h2>}>
-        <PopupMenu
-          trigger={
-            <Button variant="ghost">
-              <EllipsisVerticalIcon className="h-5 w-5" />
-            </Button>
-          }
-          items={[
-            { label: 'Edit', onClick: () => showToast('Edit clicked', 'info') },
-            { label: 'Duplicate', onClick: () => showToast('Duplicate clicked', 'info') },
-            { label: 'Delete', onClick: () => showToast('Delete clicked', 'error'), danger: true },
-          ]}
-        />
+        <div className="flex flex-wrap gap-3 items-start">
+          <div className="flex-shrink-0">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">Default (Bottom Direction)</h3>
+            <div className="p-6 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700 inline-block">
+              <PopupMenu
+                trigger={
+                  <Button variant="ghost">
+                    <EllipsisVerticalIcon className="h-5 w-5" />
+                    Open Menu
+                  </Button>
+                }
+                items={[
+                  { label: 'Edit', onClick: () => showToast('Edit clicked', 'info') },
+                  { label: 'Duplicate', onClick: () => showToast('Duplicate clicked', 'info') },
+                  { label: 'Delete', onClick: () => showToast('Delete clicked', 'error'), danger: true },
+                ]}
+              />
+            </div>
+          </div>
+
+          <div className="flex-shrink-0">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">Top Direction</h3>
+            <div className="p-6 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700 flex justify-center items-center">
+              <PopupMenu
+                direction="top"
+                trigger={
+                  <Button variant="ghost">
+                    <EllipsisVerticalIcon className="h-5 w-5" />
+                    Open Menu (Top)
+                  </Button>
+                }
+                items={[
+                  { label: 'Edit', onClick: () => showToast('Edit clicked', 'info') },
+                  { label: 'Duplicate', onClick: () => showToast('Duplicate clicked', 'info') },
+                  { label: 'Delete', onClick: () => showToast('Delete clicked', 'error'), danger: true },
+                ]}
+              />
+            </div>
+          </div>
+
+          <div className="flex-shrink-0">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">Left Direction</h3>
+            <div className="p-6 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700 flex justify-end items-center ">
+              <PopupMenu
+                direction="left"
+                trigger={
+                  <Button variant="ghost">
+                    <EllipsisVerticalIcon className="h-5 w-5" />
+                    Open Menu (Left)
+                  </Button>
+                }
+                items={[
+                  { label: 'Edit', onClick: () => showToast('Edit clicked', 'info') },
+                  { label: 'Duplicate', onClick: () => showToast('Duplicate clicked', 'info') },
+                  { label: 'Delete', onClick: () => showToast('Delete clicked', 'error'), danger: true },
+                ]}
+              />
+            </div>
+          </div>
+
+          <div className="flex-shrink-0">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">Right Direction</h3>
+            <div className="p-6 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700 flex justify-start items-center ">
+              <PopupMenu
+                direction="right"
+                trigger={
+                  <Button variant="ghost">
+                    <EllipsisVerticalIcon className="h-5 w-5" />
+                    Open Menu (Right)
+                  </Button>
+                }
+                items={[
+                  { label: 'Edit', onClick: () => showToast('Edit clicked', 'info') },
+                  { label: 'Duplicate', onClick: () => showToast('Duplicate clicked', 'info') },
+                  { label: 'Delete', onClick: () => showToast('Delete clicked', 'error'), danger: true },
+                ]}
+              />
+            </div>
+          </div>
+        </div>
+      </Card>
+      
+      {/* Round Buttons with Icons */}
+      <Card header={<h2 className="text-xl font-semibold">Round Buttons with Icons</h2>}>
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">Sizes</h3>
+            <div className="flex flex-wrap items-center gap-4">
+              <Button round size="sm" variant="primary">
+                <PlusIcon className="h-4 w-4" />
+              </Button>
+              <Button round size="md" variant="primary">
+                <PlusIcon className="h-5 w-5" />
+              </Button>
+              <Button round size="lg" variant="primary">
+                <PlusIcon className="h-6 w-6" />
+              </Button>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">Variants</h3>
+            <div className="flex flex-wrap items-center gap-4">
+              <Button round variant="primary">
+                <HeartIcon className="h-5 w-5" />
+              </Button>
+              <Button round variant="secondary">
+                <StarIcon className="h-5 w-5" />
+              </Button>
+              <Button round variant="outline">
+                <ShareIcon className="h-5 w-5" />
+              </Button>
+              <Button round variant="ghost">
+                <BellIcon className="h-5 w-5" />
+              </Button>
+              <Button round variant="danger">
+                <TrashIcon className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">With Tooltips</h3>
+            <div className="flex flex-wrap items-center gap-4">
+              <Tooltip content="Add to favorites">
+                <Button round variant="primary">
+                  <HeartIcon className="h-5 w-5" />
+                </Button>
+              </Tooltip>
+              <Tooltip content="Edit item">
+                <Button round variant="outline">
+                  <PencilIcon className="h-5 w-5" />
+                </Button>
+              </Tooltip>
+              <Tooltip content="Delete item">
+                <Button round variant="danger">
+                  <TrashIcon className="h-5 w-5" />
+                </Button>
+              </Tooltip>
+              <Tooltip content="Share">
+                <Button round variant="ghost">
+                  <ShareIcon className="h-5 w-5" />
+                </Button>
+              </Tooltip>
+            </div>
+          </div>
+        </div>
       </Card>
       
       {/* Toast Examples */}

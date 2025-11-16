@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import type { HTMLAttributes } from 'react'
 import { cn } from '@/utils/cn'
 
@@ -39,5 +40,5 @@ const Badge = ({ className, variant = 'primary', size = 'md', children, ...props
   )
 }
 
-export default Badge
+export default memo(Badge)
 

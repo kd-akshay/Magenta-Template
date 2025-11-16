@@ -40,6 +40,13 @@
     line-height: var(--line-height);
     transition: background-color var(--transition-duration) var(--transition-timing), 
                 color var(--transition-duration) var(--transition-timing);
+    /* Reserve space for scrollbar to prevent layout shift */
+    scrollbar-gutter: stable;
+  }
+  
+  html {
+    /* Reserve space for scrollbar at root level too */
+    scrollbar-gutter: stable;
   }
   
   /* Focus visible styles for keyboard navigation */
@@ -82,6 +89,47 @@
     animation: shake 0.5s ease-in-out;
   }
   
+  /* Ultra-smooth spin animation using transform only */
+  @keyframes spin-smooth {
+    0% {
+      transform: translateZ(0) rotate(0deg);
+    }
+    100% {
+      transform: translateZ(0) rotate(360deg);
+    }
+  }
+  
+  .animate-spin-smooth {
+    display: inline-block;
+    animation: spin-smooth 0.75s linear infinite;
+    will-change: transform;
+    transform-origin: center;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  
+  /* CSS-only spinner circle - ultra smooth */
+  .spinner-circle {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: spin-smooth 0.75s linear infinite;
+    will-change: transform;
+    transform: translateZ(0) rotate(0deg);
+    -webkit-transform: translateZ(0) rotate(0deg);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    opacity: 0.75;
+    isolation: isolate;
+    contain: layout style paint;
+  }
+  
   /* Smooth transitions for interactive elements */
   button, 
   a, 
@@ -118,6 +166,8 @@
   *[style*="transition-duration: 0"],
   .no-transition,
   .animate-spin,
+  .animate-spin-smooth,
+  .spinner-circle,
   .animate-pulse,
   .animate-bounce {
     transition: none !important;
@@ -142,5 +192,16 @@
   [data-headlessui-state] {
     transition-duration: var(--transition-duration) !important;
     transition-timing-function: var(--transition-timing) !important;
+  }
+  
+  /* Smooth accordion animations using CSS Grid */
+  .accordion-grid {
+    transition: grid-template-rows 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: grid-template-rows;
+  }
+  
+  .accordion-panel {
+    min-height: 0;
+    overflow: hidden;
   }
 }

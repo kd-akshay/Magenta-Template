@@ -39,6 +39,12 @@ const RadioGroup = ({
   const groupId = `radio-group-${Math.random().toString(36).substr(2, 9)}`
   const errorId = error ? `${groupId}-error` : undefined
 
+  // Determine if component is controlled or uncontrolled
+  const isControlled = controlledValue !== undefined
+  const radioGroupProps = isControlled
+    ? { value: controlledValue, onChange: handleChange }
+    : { defaultValue, onChange: handleChange }
+
   return (
     <div className={cn('w-full', className)}>
       {label && (
@@ -48,8 +54,7 @@ const RadioGroup = ({
       )}
 
       <HeadlessRadioGroup
-        value={controlledValue ?? defaultValue}
-        onChange={handleChange}
+        {...radioGroupProps}
         className={cn(
           orientation === 'horizontal' ? 'flex flex-wrap gap-4' : 'space-y-2'
         )}
@@ -67,11 +72,14 @@ const RadioGroup = ({
                 'relative flex cursor-pointer rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
                 orientation === 'horizontal' ? 'p-3 flex-1 min-w-[150px]' : 'p-4 w-full',
                 checked
-                  ? 'border-primary bg-primary/5'
-                  : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800',
-                active && 'ring-2 ring-primary ring-offset-2',
-                disabled && 'opacity-50 cursor-not-allowed',
-                error && 'border-red-500'
+                  ? error 
+                    ? 'border-red-500 dark:border-red-500 bg-red-50 dark:bg-red-900/20'
+                    : 'border-gray-900 dark:border-gray-100 bg-gray-50 dark:bg-gray-800'
+                  : error
+                    ? 'border-red-500 dark:border-red-500 bg-white dark:bg-gray-800'
+                    : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800',
+                active && 'ring-2 ring-gray-300 dark:ring-gray-600 ring-offset-2',
+                disabled && 'opacity-50 cursor-not-allowed'
               )
             }
           >
@@ -97,7 +105,7 @@ const RadioGroup = ({
                 </div>
                 {checked && (
                   <div className="ml-auto flex-shrink-0">
-                    <CheckIcon className="h-5 w-5 text-primary" aria-hidden="true" />
+                    <CheckIcon className="h-5 w-5 text-gray-900 dark:text-gray-100" aria-hidden="true" />
                   </div>
                 )}
               </div>
@@ -107,7 +115,7 @@ const RadioGroup = ({
       </HeadlessRadioGroup>
 
       {error && (
-        <p id={errorId} className="mt-1 text-sm text-red-600 dark:text-red-400" role="alert">
+        <p id={errorId} className="mt-1 text-sm font-medium text-red-600 dark:text-red-400" role="alert">
           {error}
         </p>
       )}

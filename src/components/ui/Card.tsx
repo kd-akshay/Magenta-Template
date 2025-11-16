@@ -1,3 +1,4 @@
+import { memo, useRef } from 'react'
 import type { HTMLAttributes, ReactNode } from 'react'
 import { cn } from '@/utils/cn'
 
@@ -8,7 +9,13 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Card = ({ className, children, header, footer, ...props }: CardProps) => {
-  const cardId = props.id || `card-${Math.random().toString(36).substr(2, 9)}`
+  const idRef = useRef<string | undefined>(undefined)
+  
+  if (!idRef.current && !props.id) {
+    idRef.current = `card-${Math.random().toString(36).substr(2, 9)}`
+  }
+  
+  const cardId = props.id || idRef.current!
   const headerId = header ? `${cardId}-header` : undefined
   const footerId = footer ? `${cardId}-footer` : undefined
   
@@ -38,5 +45,5 @@ const Card = ({ className, children, header, footer, ...props }: CardProps) => {
   )
 }
 
-export default Card
+export default memo(Card)
 

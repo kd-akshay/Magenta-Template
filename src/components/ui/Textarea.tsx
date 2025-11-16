@@ -35,13 +35,13 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             'focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent',
             'disabled:opacity-50 disabled:cursor-not-allowed',
             'resize-y',
-            error && 'border-red-500 focus:ring-red-500',
+            error && 'border-red-500 dark:border-red-500 focus:ring-red-500 focus:border-red-500',
             className
           )}
           {...props}
         />
         {error && (
-          <p id={errorId} className="mt-1 text-sm text-red-600 dark:text-red-400" role="alert">
+          <p id={errorId} className="mt-1 text-sm font-medium text-red-600 dark:text-red-400" role="alert">
             {error}
           </p>
         )}

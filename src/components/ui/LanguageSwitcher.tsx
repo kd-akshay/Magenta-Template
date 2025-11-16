@@ -1,3 +1,4 @@
+import { useMemo, memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import PopupMenu from './PopupMenu'
 import type { MenuItem } from './PopupMenu'
@@ -8,23 +9,29 @@ interface LanguageSwitcherProps {
   variant?: 'default' | 'header'
 }
 
-const LanguageSwitcher = ({ variant = 'default' }: LanguageSwitcherProps) => {
+const LANGUAGES = [
+  { code: 'en', label: 'English' },
+  { code: 'de', label: 'Deutsch' },
+] as const
+
+const LanguageSwitcher = memo(({ variant = 'default' }: LanguageSwitcherProps) => {
   const { i18n } = useTranslation()
   
-  const languages = [
-    { code: 'en', label: 'English' },
-    { code: 'de', label: 'Deutsch' },
-  ]
+  const currentLanguage = useMemo(
+    () => LANGUAGES.find((lang) => lang.code === i18n.language) || LANGUAGES[0],
+    [i18n.language]
+  )
   
-  const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0]
-  
-  const menuItems: MenuItem[] = languages.map((lang) => ({
-    label: lang.label,
-    onClick: () => {
-      i18n.changeLanguage(lang.code)
-      localStorage.setItem('language', lang.code)
-    },
-  }))
+  const menuItems: MenuItem[] = useMemo(
+    () => LANGUAGES.map((lang) => ({
+      label: lang.label,
+      onClick: () => {
+        i18n.changeLanguage(lang.code)
+        localStorage.setItem('language', lang.code)
+      },
+    })),
+    [i18n]
+  )
   
   const isHeaderVariant = variant === 'header'
   
@@ -45,7 +52,9 @@ const LanguageSwitcher = ({ variant = 'default' }: LanguageSwitcherProps) => {
       items={menuItems}
     />
   )
-}
+})
+
+LanguageSwitcher.displayName = 'LanguageSwitcher'
 
 export default LanguageSwitcher
 
