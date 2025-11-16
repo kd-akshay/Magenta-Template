@@ -22,7 +22,7 @@ import type { RefObject } from 'react'
  * )
  * ```
  */
-function useHover<T extends HTMLElement = HTMLElement>(ref: RefObject<T>): boolean {
+function useHover<T extends HTMLElement = HTMLElement>(ref: RefObject<T | null>): boolean {
   const [isHovered, setIsHovered] = useState<boolean>(false)
 
   const handleMouseEnter = useCallback(() => {

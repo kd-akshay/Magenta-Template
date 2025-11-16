@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useId, useImperativeHandle, useRef, useMemo, useCallback } from 'react'
-import type { SelectHTMLAttributes, ChangeEvent } from 'react'
+import type { SelectHTMLAttributes, ChangeEvent, ButtonHTMLAttributes } from 'react'
 import { Listbox as HeadlessListbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline'
 import { cn } from '@/utils/cn'
@@ -11,6 +11,44 @@ export interface SelectOption {
   disabled?: boolean
 }
 
+// Extract only button-compatible props from SelectHTMLAttributes
+// Note: We use ButtonHTMLAttributes for event handlers to ensure type compatibility
+type ButtonCompatibleProps = Pick<
+  SelectHTMLAttributes<HTMLSelectElement>,
+  | 'id'
+  | 'name'
+  | 'className'
+  | 'style'
+  | 'title'
+  | 'aria-label'
+  | 'aria-labelledby'
+  | 'aria-describedby'
+  | 'aria-invalid'
+  | 'tabIndex'
+  | 'autoFocus'
+  | 'disabled'
+> & Pick<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  | 'onClick'
+  | 'onClickCapture'
+  | 'onFocus'
+  | 'onFocusCapture'
+  | 'onBlur'
+  | 'onBlurCapture'
+  | 'onMouseDown'
+  | 'onMouseDownCapture'
+  | 'onMouseUp'
+  | 'onMouseUpCapture'
+  | 'onMouseOver'
+  | 'onMouseOverCapture'
+  | 'onMouseOut'
+  | 'onMouseOutCapture'
+  | 'onKeyDown'
+  | 'onKeyDownCapture'
+  | 'onKeyUp'
+  | 'onKeyUpCapture'
+>
+
 export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'children' | 'onChange'> {
   label?: string
   error?: string
@@ -21,6 +59,64 @@ export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement
 
 const SelectComponent = React.forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, label, error, id, options, placeholder, value, defaultValue, onChange, disabled, ...props }, ref) => {
+  // Extract only button-compatible props by picking only the ones we need
+  const {
+    name,
+    style,
+    title,
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledBy,
+    tabIndex,
+    autoFocus,
+    onClick,
+    onClickCapture,
+    onFocus,
+    onFocusCapture,
+    onBlur,
+    onBlurCapture,
+    onMouseDown,
+    onMouseDownCapture,
+    onMouseUp,
+    onMouseUpCapture,
+    onMouseOver,
+    onMouseOverCapture,
+    onMouseOut,
+    onMouseOutCapture,
+    onKeyDown,
+    onKeyDownCapture,
+    onKeyUp,
+    onKeyUpCapture,
+  } = props
+
+  // Build button-compatible props object with proper type casting for event handlers
+  // Cast through 'unknown' first to satisfy TypeScript's strict type checking
+  const buttonProps: Partial<ButtonCompatibleProps> = {
+    ...(name !== undefined && { name }),
+    ...(style !== undefined && { style }),
+    ...(title !== undefined && { title }),
+    ...(ariaLabel !== undefined && { 'aria-label': ariaLabel }),
+    ...(ariaLabelledBy !== undefined && { 'aria-labelledby': ariaLabelledBy }),
+    ...(tabIndex !== undefined && { tabIndex }),
+    ...(autoFocus !== undefined && { autoFocus }),
+    ...(onClick !== undefined && { onClick: onClick as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onClick'] }),
+    ...(onClickCapture !== undefined && { onClickCapture: onClickCapture as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onClickCapture'] }),
+    ...(onFocus !== undefined && { onFocus: onFocus as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onFocus'] }),
+    ...(onFocusCapture !== undefined && { onFocusCapture: onFocusCapture as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onFocusCapture'] }),
+    ...(onBlur !== undefined && { onBlur: onBlur as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onBlur'] }),
+    ...(onBlurCapture !== undefined && { onBlurCapture: onBlurCapture as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onBlurCapture'] }),
+    ...(onMouseDown !== undefined && { onMouseDown: onMouseDown as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onMouseDown'] }),
+    ...(onMouseDownCapture !== undefined && { onMouseDownCapture: onMouseDownCapture as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onMouseDownCapture'] }),
+    ...(onMouseUp !== undefined && { onMouseUp: onMouseUp as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onMouseUp'] }),
+    ...(onMouseUpCapture !== undefined && { onMouseUpCapture: onMouseUpCapture as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onMouseUpCapture'] }),
+    ...(onMouseOver !== undefined && { onMouseOver: onMouseOver as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onMouseOver'] }),
+    ...(onMouseOverCapture !== undefined && { onMouseOverCapture: onMouseOverCapture as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onMouseOverCapture'] }),
+    ...(onMouseOut !== undefined && { onMouseOut: onMouseOut as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onMouseOut'] }),
+    ...(onMouseOutCapture !== undefined && { onMouseOutCapture: onMouseOutCapture as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onMouseOutCapture'] }),
+    ...(onKeyDown !== undefined && { onKeyDown: onKeyDown as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onKeyDown'] }),
+    ...(onKeyDownCapture !== undefined && { onKeyDownCapture: onKeyDownCapture as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onKeyDownCapture'] }),
+    ...(onKeyUp !== undefined && { onKeyUp: onKeyUp as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onKeyUp'] }),
+    ...(onKeyUpCapture !== undefined && { onKeyUpCapture: onKeyUpCapture as unknown as ButtonHTMLAttributes<HTMLButtonElement>['onKeyUpCapture'] }),
+  }
   const [internalValue, setInternalValue] = useState<string>(defaultValue as string || '')
   const { config } = useTransition()
   const generatedId = useId()
@@ -32,7 +128,11 @@ const SelectComponent = React.forwardRef<HTMLSelectElement, SelectProps>(
   const transitionDuration = useMemo(() => config.duration / 1000, [config.duration])
 
   // Use controlled value if provided, otherwise use internal state
-  const selectedValue = useMemo(() => value !== undefined ? value : internalValue, [value, internalValue])
+  // Ensure value is always a string
+  const selectedValue = useMemo(() => {
+    const val = value !== undefined ? value : internalValue
+    return typeof val === 'string' ? val : String(val || '')
+  }, [value, internalValue])
   const selectedOption = useMemo(() => options.find((opt) => opt.value === selectedValue), [options, selectedValue])
 
   // Expose a ref that mimics HTMLSelectElement for backward compatibility
@@ -102,7 +202,7 @@ const SelectComponent = React.forwardRef<HTMLSelectElement, SelectProps>(
             )}
             aria-invalid={error ? 'true' : 'false'}
             aria-describedby={errorId}
-            {...props}
+            {...buttonProps}
           >
             <span className={cn('block truncate', !selectedOption && 'text-gray-500 dark:text-gray-400')}>
               {selectedOption ? selectedOption.label : placeholder || 'Select an option...'}
@@ -126,9 +226,6 @@ const SelectComponent = React.forwardRef<HTMLSelectElement, SelectProps>(
             enter="transition ease-out duration-200"
             enterFrom="opacity-0 scale-95"
             enterTo="opacity-100 scale-100"
-            style={{
-              transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-            }}
           >
             <HeadlessListbox.Options
               className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white dark:bg-gray-800 py-1 text-base shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none"

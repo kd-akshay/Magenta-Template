@@ -34,7 +34,7 @@ const PopupMenu = ({ trigger, items, position, direction }: PopupMenuProps) => {
     const outer = document.createElement('div')
     outer.style.visibility = 'hidden'
     outer.style.overflow = 'scroll'
-    outer.style.msOverflowStyle = 'scrollbar'
+    ;(outer.style as any).msOverflowStyle = 'scrollbar'
     outer.style.width = '100px'
     outer.style.height = '100px'
     document.body.appendChild(outer)
@@ -280,9 +280,6 @@ const PopupMenu = ({ trigger, items, position, direction }: PopupMenuProps) => {
                   ? 'transform opacity-0 scale-95 translate-x-1'
                   : 'transform opacity-0 scale-95 -translate-x-1'
               }
-              style={{
-                transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-              }}
             >
               <Menu.Items
                 className={cn(

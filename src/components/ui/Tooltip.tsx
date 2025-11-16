@@ -37,9 +37,6 @@ const Tooltip = ({ content, children, position = 'top' }: TooltipProps) => {
         leave="transition ease-in duration-150"
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
-        style={{
-          transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-        }}
       >
         <Popover.Panel
           className={cn(

@@ -146,9 +146,6 @@ const Combobox = memo((props: ComboboxProps) => {
             enterFrom="opacity-0 scale-95"
             enterTo="opacity-100 scale-100"
             afterLeave={() => setQuery('')}
-            style={{
-              transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-            }}
           >
             <HeadlessCombobox.Options 
               className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white dark:bg-gray-800 py-1 text-base shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none"

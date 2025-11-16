@@ -32,7 +32,7 @@ function useThrottle<T>(value: T, delay: number = 500): T {
         setThrottledValue(value)
         lastRan.current = Date.now()
       }
-    }, delay - (Date.now() - lastRan.current))
+    }, Math.max(0, delay - (Date.now() - lastRan.current)))
 
     return () => {
       clearTimeout(handler)
