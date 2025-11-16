@@ -2,7 +2,7 @@
 
 A production-ready starter template for building modern web applications with Vite, React, TypeScript, Tailwind CSS, Redux Toolkit, and more.
 
-🌐 **Live Demo**: [https://6918c73a40aa560008c42994--magenta-template.netlify.app/](https://6918c73a40aa560008c42994--magenta-template.netlify.app/)
+🌐 **Live Demo**: [https://magenta-template.netlify.app/](https://magenta-template.netlify.app/)
 
 ## 🚀 Features
 
