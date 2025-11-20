@@ -63,10 +63,12 @@ const CommandPalette = ({
     return acc
   }, {} as Record<string, CommandPaletteOption[]>)
 
-  const handleSelect = (option: CommandPaletteOption) => {
-    option.action()
-    onClose()
-    setQuery('')
+  const handleSelect = (option: CommandPaletteOption | null) => {
+    if (option) {
+      option.action()
+      onClose()
+      setQuery('')
+    }
   }
 
   return (
