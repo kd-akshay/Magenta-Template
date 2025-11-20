@@ -2,12 +2,14 @@ import { useState, useEffect, useMemo } from 'react'
 import { 
   Button, Input, Card, Badge, Loader, Modal, Tooltip, PopupMenu, useToast,
   AnimatedButton, AnimatedCard, AnimatedBadge, AnimatedProgress, AnimatedSkeleton, AnimatedCounter,
-  Accordion, Tabs, Checkbox, Radio, Switch, Alert, Avatar, Divider, Breadcrumbs, Textarea, Select, Pagination,
+  Accordion, Tabs, Checkbox, CheckboxCard, Radio, Switch, Alert, Avatar, Divider, Breadcrumbs, Textarea, Select, Pagination,
   Table, TableHeader, TableBody, TableRow, TableCell, SortableTableHeader, type SortDirection,
+  TableWithPagination, type TableColumn,
   Stepper, Slider, Rating, EmptyState,
-  Listbox, Combobox, Popover, RadioGroup
+  Listbox, Combobox, Popover, RadioGroup,
+  Chip, Dropdown, Drawer, DatePicker, CommandPalette
 } from '@/components/ui'
-import { EllipsisVerticalIcon, CheckCircleIcon, XCircleIcon, UserIcon, ShoppingBagIcon, CreditCardIcon, TruckIcon, InformationCircleIcon, HeartIcon, StarIcon, PlusIcon, TrashIcon, PencilIcon, ShareIcon, BellIcon } from '@heroicons/react/24/outline'
+import { EllipsisVerticalIcon, CheckCircleIcon, XCircleIcon, UserIcon, ShoppingBagIcon, CreditCardIcon, TruckIcon, InformationCircleIcon, HeartIcon, StarIcon, PlusIcon, TrashIcon, PencilIcon, ShareIcon, BellIcon, MagnifyingGlassIcon, CommandLineIcon, HomeIcon, DocumentIcon, Cog6ToothIcon } from '@heroicons/react/24/outline'
 
 const Components = () => {
   const { showToast } = useToast()
@@ -25,12 +27,44 @@ const Components = () => {
   const [comboboxValue, setComboboxValue] = useState<string | number>('')
   const [radioGroupValue, setRadioGroupValue] = useState<string | number>('option1')
   
+  // CheckboxCard states
+  const [basicPlanChecked, setBasicPlanChecked] = useState(false)
+  const [proPlanChecked, setProPlanChecked] = useState(true)
+  const [feature1Checked, setFeature1Checked] = useState(false)
+  const [feature2Checked, setFeature2Checked] = useState(true)
+  const [premiumSupportChecked, setPremiumSupportChecked] = useState(false)
+  const [apiAccessChecked, setApiAccessChecked] = useState(false)
+  
+  // New component states
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [drawerPosition, setDrawerPosition] = useState<'left' | 'right' | 'top' | 'bottom'>('right')
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false)
+  const [selectedChips, setSelectedChips] = useState<string[]>(['React', 'TypeScript'])
+  const [dropdownValue, setDropdownValue] = useState<string | number>('')
+  const [dateValue, setDateValue] = useState('')
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress((prev) => (prev >= 100 ? 0 : prev + 10))
     }, 500)
     return () => clearInterval(interval)
   }, [])
+
+  // Keyboard shortcut for Command Palette (Ctrl+K / Cmd+K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault()
+        setIsCommandPaletteOpen((prev) => !prev)
+      }
+      if (e.key === 'Escape' && isCommandPaletteOpen) {
+        setIsCommandPaletteOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isCommandPaletteOpen])
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -61,6 +95,49 @@ const Components = () => {
     { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'User', status: 'Inactive' },
     { id: 4, name: 'Alice Brown', email: 'alice@example.com', role: 'Moderator', status: 'Active' },
     { id: 5, name: 'Charlie Wilson', email: 'charlie@example.com', role: 'User', status: 'Active' },
+  ]
+
+  // Extended table data for pagination example
+  const paginatedTableData = [
+    { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'Active', joinDate: '2023-01-15' },
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User', status: 'Active', joinDate: '2023-02-20' },
+    { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'User', status: 'Inactive', joinDate: '2023-03-10' },
+    { id: 4, name: 'Alice Brown', email: 'alice@example.com', role: 'Moderator', status: 'Active', joinDate: '2023-04-05' },
+    { id: 5, name: 'Charlie Wilson', email: 'charlie@example.com', role: 'User', status: 'Active', joinDate: '2023-05-12' },
+    { id: 6, name: 'David Lee', email: 'david@example.com', role: 'User', status: 'Active', joinDate: '2023-06-18' },
+    { id: 7, name: 'Emma Davis', email: 'emma@example.com', role: 'Moderator', status: 'Active', joinDate: '2023-07-22' },
+    { id: 8, name: 'Frank Miller', email: 'frank@example.com', role: 'Admin', status: 'Active', joinDate: '2023-08-30' },
+    { id: 9, name: 'Grace Taylor', email: 'grace@example.com', role: 'User', status: 'Inactive', joinDate: '2023-09-14' },
+    { id: 10, name: 'Henry White', email: 'henry@example.com', role: 'User', status: 'Active', joinDate: '2023-10-08' },
+    { id: 11, name: 'Ivy Martinez', email: 'ivy@example.com', role: 'User', status: 'Active', joinDate: '2023-11-19' },
+    { id: 12, name: 'Jack Anderson', email: 'jack@example.com', role: 'Moderator', status: 'Active', joinDate: '2023-12-03' },
+    { id: 13, name: 'Kate Thompson', email: 'kate@example.com', role: 'User', status: 'Active', joinDate: '2024-01-11' },
+    { id: 14, name: 'Liam Garcia', email: 'liam@example.com', role: 'User', status: 'Inactive', joinDate: '2024-02-25' },
+    { id: 15, name: 'Mia Rodriguez', email: 'mia@example.com', role: 'Admin', status: 'Active', joinDate: '2024-03-09' },
+    { id: 16, name: 'Noah Martinez', email: 'noah@example.com', role: 'User', status: 'Active', joinDate: '2024-04-17' },
+    { id: 17, name: 'Olivia Lopez', email: 'olivia@example.com', role: 'User', status: 'Active', joinDate: '2024-05-23' },
+    { id: 18, name: 'Paul Harris', email: 'paul@example.com', role: 'Moderator', status: 'Active', joinDate: '2024-06-30' },
+    { id: 19, name: 'Quinn Clark', email: 'quinn@example.com', role: 'User', status: 'Inactive', joinDate: '2024-07-14' },
+    { id: 20, name: 'Rachel Lewis', email: 'rachel@example.com', role: 'User', status: 'Active', joinDate: '2024-08-21' },
+  ]
+
+  // Define columns for paginated table
+  const paginatedTableColumns: TableColumn<typeof paginatedTableData[0]>[] = [
+    { key: 'id', header: 'ID', align: 'left' },
+    { key: 'name', header: 'Name', align: 'left' },
+    { key: 'email', header: 'Email', align: 'left' },
+    { key: 'role', header: 'Role', align: 'left' },
+    {
+      key: 'status',
+      header: 'Status',
+      align: 'center',
+      render: (value) => (
+        <Badge variant={value === 'Active' ? 'success' : 'secondary'}>
+          {value}
+        </Badge>
+      ),
+    },
+    { key: 'joinDate', header: 'Join Date', align: 'left' },
   ]
 
   const sortedTableData = useMemo(() => {
@@ -517,6 +594,143 @@ const Components = () => {
           </div>
           <Divider />
           <div>
+            <h3 className="text-lg font-medium mb-3">Checkbox Cards</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <CheckboxCard
+                header={<h4 className="font-semibold text-lg">Basic Plan</h4>}
+                checked={basicPlanChecked}
+                onChange={(checked) => {
+                  setBasicPlanChecked(checked)
+                  showToast(`Basic Plan ${checked ? 'selected' : 'deselected'}`, 'info')
+                }}
+              >
+                <div className="space-y-2">
+                  <p className="text-2xl font-bold text-primary">$9<span className="text-sm font-normal text-gray-600 dark:text-gray-400">/month</span></p>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                    <li>✓ 10 Projects</li>
+                    <li>✓ 5GB Storage</li>
+                    <li>✓ Basic Support</li>
+                  </ul>
+                </div>
+              </CheckboxCard>
+
+              <CheckboxCard
+                header={<h4 className="font-semibold text-lg">Pro Plan</h4>}
+                checked={proPlanChecked}
+                onChange={(checked) => {
+                  setProPlanChecked(checked)
+                  showToast(`Pro Plan ${checked ? 'selected' : 'deselected'}`, 'info')
+                }}
+              >
+                <div className="space-y-2">
+                  <p className="text-2xl font-bold text-primary">$29<span className="text-sm font-normal text-gray-600 dark:text-gray-400">/month</span></p>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                    <li>✓ Unlimited Projects</li>
+                    <li>✓ 50GB Storage</li>
+                    <li>✓ Priority Support</li>
+                  </ul>
+                </div>
+              </CheckboxCard>
+
+              <CheckboxCard
+                header={<h4 className="font-semibold text-lg">Enterprise</h4>}
+                checked={false}
+                disabled
+                onChange={(checked) => showToast(`Enterprise ${checked ? 'selected' : 'deselected'}`, 'info')}
+              >
+                <div className="space-y-2">
+                  <p className="text-2xl font-bold text-primary">$99<span className="text-sm font-normal text-gray-600 dark:text-gray-400">/month</span></p>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                    <li>✓ Unlimited Everything</li>
+                    <li>✓ 1TB Storage</li>
+                    <li>✓ 24/7 Support</li>
+                  </ul>
+                </div>
+              </CheckboxCard>
+            </div>
+
+            <div className="mt-6">
+              <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Feature Selection Cards</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <CheckboxCard
+                  checkboxPosition="top-left"
+                  checked={feature1Checked}
+                  onChange={(checked) => {
+                    setFeature1Checked(checked)
+                    showToast(`Feature 1 ${checked ? 'enabled' : 'disabled'}`, 'info')
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
+                      <StarIcon className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h5 className="font-semibold mb-1">Advanced Analytics</h5>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Get detailed insights and reports about your data
+                      </p>
+                    </div>
+                  </div>
+                </CheckboxCard>
+
+                <CheckboxCard
+                  checkboxPosition="top-left"
+                  checked={feature2Checked}
+                  onChange={(checked) => {
+                    setFeature2Checked(checked)
+                    showToast(`Feature 2 ${checked ? 'enabled' : 'disabled'}`, 'info')
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
+                      <CreditCardIcon className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h5 className="font-semibold mb-1">Payment Processing</h5>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Accept payments securely with multiple gateways
+                      </p>
+                    </div>
+                  </div>
+                </CheckboxCard>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Card with Footer</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <CheckboxCard
+                  header={<h4 className="font-semibold">Premium Support</h4>}
+                  footer={<Button size="sm" variant="outline" className="w-full">Learn More</Button>}
+                  checked={premiumSupportChecked}
+                  onChange={(checked) => {
+                    setPremiumSupportChecked(checked)
+                    showToast(`Premium Support ${checked ? 'selected' : 'deselected'}`, 'info')
+                  }}
+                >
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Get priority support with faster response times and dedicated assistance.
+                  </p>
+                </CheckboxCard>
+
+                <CheckboxCard
+                  header={<h4 className="font-semibold">API Access</h4>}
+                  footer={<Badge variant="success">Recommended</Badge>}
+                  checked={apiAccessChecked}
+                  onChange={(checked) => {
+                    setApiAccessChecked(checked)
+                    showToast(`API Access ${checked ? 'selected' : 'deselected'}`, 'info')
+                  }}
+                >
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Integrate with our RESTful API to build custom solutions.
+                  </p>
+                </CheckboxCard>
+              </div>
+            </div>
+          </div>
+          <Divider />
+          <div>
             <h3 className="text-lg font-medium mb-3">Radio Buttons</h3>
             <div className="space-y-3">
               <Radio name="option" label="Option 1" value="1" defaultChecked />
@@ -793,6 +1007,24 @@ const Components = () => {
                 ))}
               </TableBody>
             </Table>
+          </div>
+
+          <Divider />
+
+          {/* Table with Pagination */}
+          <div>
+            <h3 className="text-lg font-medium mb-3">Table with Pagination</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              A fully-featured table component with built-in pagination, items per page selector, and customizable columns.
+            </p>
+            <TableWithPagination
+              data={paginatedTableData}
+              columns={paginatedTableColumns}
+              itemsPerPage={5}
+              itemsPerPageOptions={[5, 10, 15, 20]}
+              striped
+              hoverable
+            />
           </div>
         </div>
       </Card>
@@ -1447,6 +1679,283 @@ const Components = () => {
           </div>
         </div>
       </Card>
+
+      {/* Chip/Tag */}
+      <Card className="p-6">
+        <h2 className="text-2xl font-bold mb-6">Chip / Tag</h2>
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-lg font-medium mb-4">Basic Chips</h3>
+            <div className="flex flex-wrap gap-2">
+              <Chip variant="primary">Primary</Chip>
+              <Chip variant="secondary">Secondary</Chip>
+              <Chip variant="success">Success</Chip>
+              <Chip variant="warning">Warning</Chip>
+              <Chip variant="danger">Danger</Chip>
+              <Chip variant="info">Info</Chip>
+              <Chip variant="outline">Outline</Chip>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium mb-4">Removable Chips</h3>
+            <div className="flex flex-wrap gap-2">
+              {selectedChips.map((chip) => (
+                <Chip
+                  key={chip}
+                  variant="primary"
+                  removable
+                  onRemove={() => setSelectedChips(selectedChips.filter((c) => c !== chip))}
+                >
+                  {chip}
+                </Chip>
+              ))}
+              <Chip variant="success" removable onRemove={() => showToast('Chip removed', 'info')}>
+                Removable
+              </Chip>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium mb-4">Chips with Icons</h3>
+            <div className="flex flex-wrap gap-2">
+              <Chip variant="primary" icon={<StarIcon className="w-4 h-4" />}>
+                Featured
+              </Chip>
+              <Chip variant="success" icon={<CheckCircleIcon className="w-4 h-4" />}>
+                Verified
+              </Chip>
+              <Chip variant="warning" icon={<BellIcon className="w-4 h-4" />} removable>
+                Notification
+              </Chip>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium mb-4">Chip Sizes</h3>
+            <div className="flex flex-wrap items-center gap-2">
+              <Chip size="sm" variant="primary">Small</Chip>
+              <Chip size="md" variant="primary">Medium</Chip>
+              <Chip size="lg" variant="primary">Large</Chip>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Dropdown */}
+      <Card className="p-6">
+        <h2 className="text-2xl font-bold mb-6">Dropdown</h2>
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-lg font-medium mb-4">Basic Dropdown</h3>
+            <Dropdown
+              options={[
+                { value: 'option1', label: 'Option 1' },
+                { value: 'option2', label: 'Option 2' },
+                { value: 'option3', label: 'Option 3' },
+              ]}
+              value={dropdownValue}
+              onChange={setDropdownValue}
+              placeholder="Select an option"
+            />
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium mb-4">Dropdown with Icons</h3>
+            <Dropdown
+              options={[
+                { value: 'home', label: 'Home', icon: <HomeIcon className="w-5 h-5" /> },
+                { value: 'documents', label: 'Documents', icon: <DocumentIcon className="w-5 h-5" /> },
+                { value: 'settings', label: 'Settings', icon: <Cog6ToothIcon className="w-5 h-5" /> },
+              ]}
+              placeholder="Choose an option"
+            />
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium mb-4">Dropdown Sizes</h3>
+            <div className="space-y-4">
+              <Dropdown
+                size="sm"
+                options={[
+                  { value: '1', label: 'Small Option 1' },
+                  { value: '2', label: 'Small Option 2' },
+                ]}
+                placeholder="Small dropdown"
+              />
+              <Dropdown
+                size="md"
+                options={[
+                  { value: '1', label: 'Medium Option 1' },
+                  { value: '2', label: 'Medium Option 2' },
+                ]}
+                placeholder="Medium dropdown"
+              />
+              <Dropdown
+                size="lg"
+                options={[
+                  { value: '1', label: 'Large Option 1' },
+                  { value: '2', label: 'Large Option 2' },
+                ]}
+                placeholder="Large dropdown"
+              />
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Drawer */}
+      <Card className="p-6">
+        <h2 className="text-2xl font-bold mb-6">Drawer / SideSheet</h2>
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-lg font-medium mb-4">Drawer Positions</h3>
+            <div className="flex flex-wrap gap-4">
+              <Button onClick={() => { setDrawerPosition('left'); setIsDrawerOpen(true); }}>
+                Open Left Drawer
+              </Button>
+              <Button onClick={() => { setDrawerPosition('right'); setIsDrawerOpen(true); }}>
+                Open Right Drawer
+              </Button>
+              <Button onClick={() => { setDrawerPosition('top'); setIsDrawerOpen(true); }}>
+                Open Top Drawer
+              </Button>
+              <Button onClick={() => { setDrawerPosition('bottom'); setIsDrawerOpen(true); }}>
+                Open Bottom Drawer
+              </Button>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium mb-4">Drawer Sizes</h3>
+            <div className="flex flex-wrap gap-4">
+              <Button onClick={() => { setDrawerPosition('right'); setIsDrawerOpen(true); }}>
+                Open Drawer (Default)
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      <Drawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        title="Drawer Title"
+        position={drawerPosition}
+        size="md"
+      >
+        <div className="space-y-4">
+          <p className="text-gray-600 dark:text-gray-400">
+            This is a drawer component. It can slide in from any side of the screen.
+          </p>
+          <p className="text-gray-600 dark:text-gray-400">
+            You can add any content here, including forms, lists, or other components.
+          </p>
+          <Button onClick={() => setIsDrawerOpen(false)}>Close Drawer</Button>
+        </div>
+      </Drawer>
+
+      {/* DatePicker */}
+      <Card className="p-6">
+        <h2 className="text-2xl font-bold mb-6">DatePicker</h2>
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-lg font-medium mb-4">Basic DatePicker</h3>
+            <DatePicker
+              label="Select a date"
+              value={dateValue}
+              onChange={setDateValue}
+              placeholder="Choose a date"
+            />
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium mb-4">DatePicker with Min/Max</h3>
+            <DatePicker
+              label="Select date range"
+              min="2024-01-01"
+              max="2024-12-31"
+              helperText="Select a date between January and December 2024"
+            />
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium mb-4">DatePicker with Error</h3>
+            <DatePicker
+              label="Date with error"
+              error="This field is required"
+            />
+          </div>
+        </div>
+      </Card>
+
+      {/* Command Palette */}
+      <Card className="p-6">
+        <h2 className="text-2xl font-bold mb-6">Command Palette</h2>
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-lg font-medium mb-4">Command Palette</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              Press the button below or use Ctrl+K (Cmd+K on Mac) to open the command palette.
+            </p>
+            <Button onClick={() => setIsCommandPaletteOpen(true)}>
+              Open Command Palette
+            </Button>
+          </div>
+        </div>
+      </Card>
+
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        options={[
+          {
+            id: 'home',
+            label: 'Go to Home',
+            description: 'Navigate to the home page',
+            icon: <HomeIcon className="w-5 h-5" />,
+            keywords: ['home', 'dashboard', 'main'],
+            group: 'Navigation',
+            action: () => showToast('Navigating to Home', 'info'),
+          },
+          {
+            id: 'documents',
+            label: 'Open Documents',
+            description: 'View all documents',
+            icon: <DocumentIcon className="w-5 h-5" />,
+            keywords: ['documents', 'files', 'docs'],
+            group: 'Navigation',
+            action: () => showToast('Opening Documents', 'info'),
+          },
+          {
+            id: 'settings',
+            label: 'Open Settings',
+            description: 'Configure application settings',
+            icon: <Cog6ToothIcon className="w-5 h-5" />,
+            keywords: ['settings', 'preferences', 'config'],
+            group: 'Navigation',
+            action: () => showToast('Opening Settings', 'info'),
+          },
+          {
+            id: 'search',
+            label: 'Search',
+            description: 'Search across the application',
+            icon: <MagnifyingGlassIcon className="w-5 h-5" />,
+            keywords: ['search', 'find', 'query'],
+            group: 'Actions',
+            action: () => showToast('Opening Search', 'info'),
+          },
+          {
+            id: 'command',
+            label: 'Run Command',
+            description: 'Execute a system command',
+            icon: <CommandLineIcon className="w-5 h-5" />,
+            keywords: ['command', 'run', 'execute'],
+            group: 'Actions',
+            action: () => showToast('Running Command', 'info'),
+          },
+        ]}
+      />
     </div>
   )
 }

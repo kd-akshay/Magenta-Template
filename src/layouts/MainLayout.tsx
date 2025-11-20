@@ -49,7 +49,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <AuthProvider>
       <div className="min-h-screen flex flex-col">
-        <Header sidebarToggle={<SidebarToggle onClick={toggleSidebar} isVisible={isSidebarOpen} />} />
+        <Header sidebarToggle={<SidebarToggle onClick={toggleSidebar} isVisible={isSidebarOpen} variant="header" />} />
         <div className="flex flex-1 overflow-hidden relative">
           <Sidebar
             isOpen={isSidebarOpen}

@@ -1,15 +1,33 @@
-import { Fragment } from 'react'
+import { useState } from 'react'
 import type { ReactNode } from 'react'
-import { Popover, Transition } from '@headlessui/react'
 import { cn } from '@/utils/cn'
 
 export interface TooltipProps {
   content: string
   children: ReactNode
   position?: 'top' | 'bottom' | 'left' | 'right'
+  delay?: number
 }
 
-const Tooltip = ({ content, children, position = 'top' }: TooltipProps) => {
+const Tooltip = ({ content, children, position = 'top', delay = 200 }: TooltipProps) => {
+  const [isVisible, setIsVisible] = useState(false)
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
+
+  const handleMouseEnter = () => {
+    const id = setTimeout(() => {
+      setIsVisible(true)
+    }, delay)
+    setTimeoutId(id)
+  }
+
+  const handleMouseLeave = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+      setTimeoutId(null)
+    }
+    setIsVisible(false)
+  }
+
   const positions = {
     top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
     bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
@@ -24,36 +42,43 @@ const Tooltip = ({ content, children, position = 'top' }: TooltipProps) => {
     right: 'right-full top-1/2 -translate-y-1/2 -mr-1',
   }
   
+  const tooltipId = `tooltip-${Math.random().toString(36).substr(2, 9)}`
+  
   return (
-    <Popover className="relative">
-      <Popover.Button as="div" className="cursor-help">
-        {children}
-      </Popover.Button>
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-200"
-        enterFrom="opacity-0 scale-95"
-        enterTo="opacity-100 scale-100"
-        leave="transition ease-in duration-150"
-        leaveFrom="opacity-100 scale-100"
-        leaveTo="opacity-0 scale-95"
-      >
-        <Popover.Panel
+    <div
+      className="relative inline-block"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onFocus={handleMouseEnter}
+      onBlur={handleMouseLeave}
+      aria-describedby={isVisible ? tooltipId : undefined}
+    >
+      {children}
+      {isVisible && (
+        <div
+          id={tooltipId}
           className={cn(
-            'absolute z-50 px-3 py-2 text-sm font-medium text-white bg-gray-900 dark:bg-gray-700 rounded-lg shadow-lg whitespace-nowrap',
-            positions[position]
+            'absolute z-50 px-3 py-2 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap pointer-events-none transition-all duration-200',
+            'bg-gray-600 dark:bg-gray-800 text-white dark:text-gray-100',
+            'border border-gray-500 dark:border-gray-700',
+            positions[position],
+            'opacity-100 scale-100'
           )}
+          role="tooltip"
+          aria-live="polite"
         >
           {content}
           <div
             className={cn(
-              'absolute w-2 h-2 bg-gray-900 dark:bg-gray-700 transform rotate-45',
+              'absolute w-2 h-2 transform rotate-45',
+              'bg-gray-600 dark:bg-gray-800 border-gray-500 dark:border-gray-700',
               arrowPositions[position]
             )}
+            aria-hidden="true"
           />
-        </Popover.Panel>
-      </Transition>
-    </Popover>
+        </div>
+      )}
+    </div>
   )
 }
 

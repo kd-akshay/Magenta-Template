@@ -134,7 +134,11 @@ const Rating = ({
         </label>
       )}
 
-      <div className="flex items-center gap-1">
+      <div 
+        className="flex items-center gap-1"
+        role="radiogroup"
+        aria-label={label || 'Rating'}
+      >
         {Array.from({ length: max }, (_, index) => {
           const starValue = index + 1
           const fill = getStarFill(index)
@@ -152,8 +156,9 @@ const Rating = ({
                 !readOnly && 'cursor-pointer hover:scale-110',
                 readOnly && 'cursor-default opacity-50'
               )}
-              aria-label={`Rate ${starValue} out of ${max}`}
+              aria-label={`Rate ${starValue} out of ${max}${showLabels && ratingLabels[index] ? `, ${ratingLabels[index]}` : ''}`}
               aria-pressed={displayValue >= starValue}
+              aria-checked={displayValue >= starValue}
             >
               {/* Half star overlay */}
               {allowHalf && fill === 'half' && (

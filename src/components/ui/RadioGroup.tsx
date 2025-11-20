@@ -70,7 +70,7 @@ const RadioGroup = ({
             className={({ active, checked, disabled }) =>
               cn(
                 'relative flex cursor-pointer rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
-                orientation === 'horizontal' ? 'p-3 flex-1 min-w-[150px]' : 'p-4 w-full',
+                orientation === 'horizontal' ? 'p-4 flex-1 min-w-[120px]' : 'p-4 w-full',
                 checked
                   ? error 
                     ? 'border-red-500 dark:border-red-500 bg-red-50 dark:bg-red-900/20'
@@ -84,29 +84,45 @@ const RadioGroup = ({
             }
           >
             {({ checked }) => (
-              <div className="flex w-full items-center">
-                <div className="flex h-5 items-center">
-                  <HeadlessRadioGroup.Label
-                    as="div"
-                    className={cn(
-                      'flex items-center',
-                      orientation === 'horizontal' ? 'flex-col text-center' : 'flex-row'
-                    )}
-                  >
-                    {option.icon && (
-                      <span className={cn('flex-shrink-0', orientation === 'horizontal' ? 'mb-2' : 'mr-3')}>
-                        {option.icon}
-                      </span>
-                    )}
-                    <span className="font-medium text-gray-900 dark:text-gray-100">
-                      {option.label}
+              <div className={cn(
+                'flex w-full',
+                orientation === 'horizontal' ? 'flex-col items-center justify-center relative' : 'items-center'
+              )}>
+                {orientation === 'horizontal' && checked && (
+                  <div className="absolute top-2 right-2 flex-shrink-0">
+                    <CheckIcon className="h-4 w-4 text-gray-900 dark:text-gray-100" aria-hidden="true" />
+                  </div>
+                )}
+                <HeadlessRadioGroup.Label
+                  as="div"
+                  className={cn(
+                    'flex items-center w-full',
+                    orientation === 'horizontal' ? 'flex-col text-center gap-2' : 'flex-row'
+                  )}
+                >
+                  {option.icon && (
+                    <span className={cn('flex-shrink-0', orientation === 'horizontal' ? '' : 'mr-3')}>
+                      {option.icon}
                     </span>
-                  </HeadlessRadioGroup.Label>
-                </div>
-                {checked && (
+                  )}
+                  <span className="font-medium text-gray-900 dark:text-gray-100">
+                    {option.label}
+                  </span>
+                  {option.description && orientation === 'vertical' && (
+                    <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">
+                      {option.description}
+                    </span>
+                  )}
+                </HeadlessRadioGroup.Label>
+                {orientation === 'vertical' && checked && (
                   <div className="ml-auto flex-shrink-0">
                     <CheckIcon className="h-5 w-5 text-gray-900 dark:text-gray-100" aria-hidden="true" />
                   </div>
+                )}
+                {orientation === 'horizontal' && option.description && (
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 text-center">
+                    {option.description}
+                  </p>
                 )}
               </div>
             )}

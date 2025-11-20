@@ -217,8 +217,8 @@ const Slider = ({
 
       <div
         className={cn(
-          'relative flex items-center',
-          orientation === 'vertical' && 'flex-col h-64 w-auto',
+          'relative',
+          orientation === 'vertical' && 'flex h-64 w-auto',
           disabled && 'opacity-50 cursor-not-allowed'
         )}
       >
@@ -304,6 +304,8 @@ const Slider = ({
             aria-valuemax={max}
             aria-valuenow={value}
             aria-disabled={disabled}
+            aria-label={label || `Slider from ${min} to ${max}`}
+            aria-orientation={orientation}
           >
             {/* Value tooltip */}
             {isDragging && (
@@ -319,18 +321,35 @@ const Slider = ({
           </div>
         </div>
 
-        {/* Value labels */}
-        <div
-          className={cn(
-            'flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-2',
-            orientation === 'vertical' && 'flex-col space-y-1 w-full text-center'
-          )}
-        >
-          <span>{formatDisplayValue(min)}</span>
-          <span className="font-semibold text-primary">{formatDisplayValue(value)}</span>
-          <span>{formatDisplayValue(max)}</span>
-        </div>
+        {/* Min and Max labels below slider */}
+        {orientation === 'horizontal' && (
+          <div className="flex justify-between items-center mt-2">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {formatDisplayValue(min)}
+            </span>
+            <span className="text-xs font-semibold text-primary">
+              {formatDisplayValue(value)}
+            </span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {formatDisplayValue(max)}
+            </span>
+          </div>
+        )}
+        {orientation === 'vertical' && (
+          <div className="flex flex-col justify-between items-center ml-2 h-full">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {formatDisplayValue(max)}
+            </span>
+            <span className="text-xs font-semibold text-primary">
+              {formatDisplayValue(value)}
+            </span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {formatDisplayValue(min)}
+            </span>
+          </div>
+        )}
       </div>
+
 
       {/* Helper text or error */}
       {(helperText || error) && (

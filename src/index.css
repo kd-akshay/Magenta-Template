@@ -204,4 +204,25 @@
     min-height: 0;
     overflow: hidden;
   }
+  
+  /* Hide native date picker icon */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+  }
+  
+  input[type="date"]::-webkit-inner-spin-button,
+  input[type="date"]::-webkit-clear-button {
+    display: none;
+    -webkit-appearance: none;
+  }
+  
+  /* Date picker dark mode support */
+  input[type="date"] {
+    color-scheme: light;
+  }
+  
+  .dark input[type="date"] {
+    color-scheme: dark;
+  }
 }
